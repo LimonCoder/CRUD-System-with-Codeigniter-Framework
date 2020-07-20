@@ -56,7 +56,8 @@ class Student extends CI_Controller {
 				);
 				$this->session->set_userdata($user);
 
-				redirect(base_url()."Student/deshboard");
+//				redirect(base_url()."Student/deshboard");
+				redirect("deshboard");
 
 			}else{
 				$this->session->set_flashdata('error', 'Your Email and Password Invaild');
@@ -87,5 +88,9 @@ class Student extends CI_Controller {
 
 		}
 		redirect(base_url()."Student/login");
+	}
+
+	public function add_student(){
+		
 	}
 }
