@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Student extends CI_Controller {
+class home extends CI_Controller {
 
 	public function __construct()
 	{
@@ -56,12 +56,12 @@ class Student extends CI_Controller {
 				);
 				$this->session->set_userdata($user);
 
-//				redirect(base_url()."Student/deshboard");
-				redirect("deshboard");
+				redirect(base_url()."home/deshboard");
+
 
 			}else{
 				$this->session->set_flashdata('error', 'Your Email and Password Invaild');
-				redirect(base_url()."Student/login");
+				redirect(base_url()."home/login");
 			}
 
 
@@ -73,7 +73,7 @@ class Student extends CI_Controller {
 	public function deshboard(){
 
 		if ($this->session->userdata("email") != ''){
-			$data['deshboard'] = $this->load->view('deshboard','',true);
+			$data['maincontain'] = $this->load->view('deshboard','',true);
 			$this->load->view('pages/adminpage',$data);
 		}else{
 			$this->load->view('login');
@@ -87,10 +87,8 @@ class Student extends CI_Controller {
 			$this->session->sess_destroy();
 
 		}
-		redirect(base_url()."Student/login");
+		redirect(base_url()."home/login");
 	}
 
-	public function add_student(){
-		
-	}
+
 }
