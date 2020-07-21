@@ -14,6 +14,12 @@ class StudentsDB extends CI_Model {
 		}
 	}
 
+	public function student_insert($data){
+		$query = $this->db->insert("add_student",$data);
+		return $query;
+
+	}
+
 
 }
 ?>

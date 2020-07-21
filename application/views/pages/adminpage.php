@@ -295,12 +295,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<nav>
 						<ul class="nav nav-left-lines" id="main-nav">
 							<!--HOME-->
-							<li class="active-item"><a href="<?=base_url()?>home/deshboard"><i class="fa fa-home" aria-hidden="true"></i><span>Dashboard</span></a></li>
+							<li class="<?=($this->uri->segment(2) == 'deshboard')?'active-item':''?>"><a href="<?=base_url()?>home/deshboard"><i class="fa fa-home" aria-hidden="true"></i><span>Dashboard</span></a></li>
 							<!--Student-->
 							<li class="has-child-item <?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'add_student' )?'open-item':'close-item'?>  ">
 								<a><i class="fa fa-user" aria-hidden="true"></i><span>Student</span></a>
 								<ul class="nav child-nav level-1">
-									<li><a href="<?=base_url()?>student/add_student">Add Student</a></li>
+									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student' )?'active-item':''?>  "><a href="<?=base_url()?>student/add_student">Add Student</a></li>
 									<li><a href="<?=base_url()?>student/manage_student">Manage Student</a></li>
 
 								</ul>
