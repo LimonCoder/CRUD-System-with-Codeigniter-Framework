@@ -20,6 +20,28 @@ class StudentsDB extends CI_Model {
 
 	}
 
+	public function fatch_data(){
+		$query = $this->db->get("add_student");
+		return $query->result();
+	}
+	public function single_fetch_data($id){
+		$this->db->where("id",$id);
+		$query = $this->db->get("add_student");
+		return $query->result_array() ;
+
+	}
+
+	public function delete_single_fetch($id){
+		$this->db->where("id",$id);
+		$this->db->delete("add_student");
+	}
+	public function update_single_fetch($data, $id){
+		$this->db->where('id', $id);
+		return  $this->db->update('add_student', $data);
+	}
+
+
+
 
 }
 ?>

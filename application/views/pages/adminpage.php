@@ -18,9 +18,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script src="<?=base_url()?>assets/vendor/pace/pace.min.js"></script>
 	<link href="<?=base_url()?>assets/vendor/pace/pace-theme-minimal.css" rel="stylesheet" />
 
+	<!-- Jquery UI -->
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
 	<!--BASIC css-->
 	<!-- ========================================================= -->
-	<link rel="stylesheet" href="<?=base_url()?>assets/vendor/bootstrap/css/bootstrap.css">
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap.min.css">
 	<link rel="stylesheet" href="<?=base_url()?>assets/vendor/font-awesome/css/font-awesome.css">
 	<link rel="stylesheet" href="<?=base_url()?>assets/vendor/animate.css/animate.css">
 	<!--SECTION css-->
@@ -33,6 +38,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<!-- ========================================================= -->
 	<link rel="stylesheet" href="<?=base_url()?>assets/stylesheets/css/style.css">
 	<link rel="stylesheet" href="<?=base_url()?>assets/stylesheets/css/custom-style.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- jQuery UI library -->
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
+
 
 
 </head>
@@ -297,11 +311,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<!--HOME-->
 							<li class="<?=($this->uri->segment(2) == 'deshboard')?'active-item':''?>"><a href="<?=base_url()?>home/deshboard"><i class="fa fa-home" aria-hidden="true"></i><span>Dashboard</span></a></li>
 							<!--Student-->
-							<li class="has-child-item <?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'add_student' )?'open-item':'close-item'?>  ">
+							<li class="has-child-item <?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student' | $this->uri->segment(2) == 'student_info_edit' )?'open-item':'close-item'?>  ">
 								<a><i class="fa fa-user" aria-hidden="true"></i><span>Student</span></a>
 								<ul class="nav child-nav level-1">
 									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student' )?'active-item':''?>  "><a href="<?=base_url()?>student/add_student">Add Student</a></li>
-									<li><a href="<?=base_url()?>student/manage_student">Manage Student</a></li>
+									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student' )?'active-item':''?>" ><a href="<?=base_url()?>student/manage_student">Manage Student</a></li>
 
 								</ul>
 							</li>
@@ -321,9 +335,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	</div>
 </div>
 <!--BASIC scripts-->
+<!-- =========================== datatables ============================== -->
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap.min.js"></script>
 <!-- ========================================================= -->
-<script src="<?=base_url()?>assets/vendor/jquery/jquery-1.12.3.min.js"></script>
-<script src="<?=base_url()?>assets/vendor/bootstrap/js/bootstrap.min.js"></script>
 <script src="<?=base_url()?>assets/vendor/nano-scroller/nano-scroller.js"></script>
 <!--TEMPLATE scripts-->
 <!-- ========================================================= -->
@@ -334,12 +349,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--Notification msj-->
 <script src="<?=base_url()?>assets/vendor/toastr/toastr.min.js"></script>
 <!--morris chart-->
-<script src="<?=base_url()?>assets/vendor/chart-js/chart.min.js"></script>
 <!--Gallery with Magnific popup-->
 <script src="<?=base_url()?>assets/vendor/magnific-popup/jquery.magnific-popup.min.js"></script>
 <!--Examples-->
 <script src="<?=base_url()?>assets/javascripts/examples/dashboard.js"></script>
+<script src="<?=base_url()?>assets/javascripts/custom.js"></script>
+
 </body>
+
 
 
 <!-- Mirrored from myiideveloper.com/helsinki/last-version/helsinki_green-dark/src/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 05 Mar 2019 13:05:07 GMT -->

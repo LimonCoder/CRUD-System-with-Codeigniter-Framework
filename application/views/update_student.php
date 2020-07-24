@@ -9,7 +9,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 		<!-- leftside content header -->
 		<div class="leftside-content-header">
 			<ul class="breadcrumbs">
-				<li><i class="fa fa-user" aria-hidden="true"></i><a href="#">Add Student</a></li>
+				<li><i class="fa fa-user" aria-hidden="true"></i><a href="#">Update Student</a></li>
 			</ul>
 		</div>
 	</div>
@@ -20,21 +20,21 @@ defined('BASEPATH') or exit('No direct script access allowed');
 				<div class="col-md-12 col-lg-12">
 					<div class="x_panel">
 						<?php
-							if ($this->uri->segment(2) == "inserted"){ ?>
-								<div class="alert alert-success" role="alert">
-									Successfully Data saved
-									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-								</div>
+						if ($this->uri->segment(2) == "updated"){ ?>
+							<div class="alert alert-success" role="alert">
+								Successfully Data saved
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
 						<?php }
-							if ($this->session->flashdata('data_unsuccess') != '' ){ ?>
-								<div class="alert alert-danger" role="alert">
-									Data inserted failid
-									<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</div>
+						if ($this->session->flashdata('data_unsuccess') != '' ){ ?>
+							<div class="alert alert-danger" role="alert">
+								Data inserted failid
+								<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
 						<?php	}
 						?>
 
@@ -43,10 +43,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 						<div class="x_content">
 							<br>
-							<form class="form-horizontal" role="form" action="<?=base_url()?>student/addstudent_form_validation" method="post"
+							<form class="form-horizontal" role="form" action="<?=base_url()?>student/update_form_validation" method="post"
 								  enctype="multipart/form-data">
 
 								<h4 class="student-head" style="">&nbsp;&nbsp;Student Information </h4>
+
 								<div class="information_wrapper">
 
 									<div class="row">
@@ -54,11 +55,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 											<label class="control-label col-md-4 col-sm-4 col-xs-12" for="english_name"
 												   style="margin-top: 30px;"> Student Name (English) <span
-														class="required">*</span>
+													class="required">*</span>
 											</label>
 
 											<div class="col-md-8 col-sm-8 col-xs-12" style="margin-top: 30px;">
-
+												<input type="hidden" id="id_no" name="id_no" value="">
 												<input type="text" id="english_name" name="english_name"
 													   class="form-control" value="">
 
@@ -89,7 +90,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 											</label>
 											<div class="col-md-8 col-sm-8 col-xs-12">
 												<input type="text" id="bangla_name" name="bangla_name"
-													   class="form-control col-md-7 col-xs-12">
+													   class="form-control col-md-7 col-xs-12" value="">
 											</div>
 										</div>
 
@@ -111,10 +112,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 									<div class="row" style="margin-top: 10px;">
 										<div class="form-group col-md-6">
 											<label class="control-label col-md-4 col-sm-4 col-xs-12" for="gender">Gender<span
-														class="required">*</span>
+													class="required">*</span>
 											</label>
 											<div class="col-md-8 col-sm-8 col-xs-12">
-												<select class="form-control " name="gender" id="gender">
+												<select class="form-control " name="gender" id="gender"  >
 													<option value="">Select</option>
 
 													<option value="Male">Male</option>
@@ -124,6 +125,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 													<option value="Others">Others</option>
 
 												</select>
+
 												<span class="required" id="gender_error">
 													<?=form_error("gender")?>
                                                       </span>
@@ -191,7 +193,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 										<div class="form-group col-md-6">
 											<label for="previous_school"
 												   class="control-label col-md-4 col-sm-4 col-xs-12">Religion <span
-														class="required">*</span>
+													class="required">*</span>
 											</label>
 											<div class="col-md-8 col-sm-8 col-xs-12">
 												<select class="form-control" name="religion" id="religion">
@@ -229,13 +231,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 										<div class="form-group col-md-11">
 											<div class="buttons" style="float: right">
 												<button type="submit" name="submit" class="btn btn-primary"><span
-															class="glyphicon glyphicon-send"></span> Save
+														class="glyphicon glyphicon-send"></span> Update
 												</button>
 												&nbsp;&nbsp;
 
 
 												<button type="reset" value="" class="btn btn-warning" id="reset"><span
-															class="glyphicon glyphicon-refresh"></span> Reset
+														class="glyphicon glyphicon-refresh"></span> Reset
 												</button>
 											</div>
 
@@ -261,6 +263,40 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <!-- CONTENT -->
 <script>
 
+	$(function () {
+		var sid = <?= $this->uri->segment(3)?>;
+		$.ajax({
+			url:'<?=base_url()?>student/student_info_edit_action',
+			type:'POST',
+			data:{
+				id:sid
+			},
+			dataType:'json',
+			success:function (res) {
+				$(res).each(function (index, value) {
+
+					$("#id_no").val(value.id);
+					$("#english_name").val(value.english_name);
+					$("#bangla_name").val(value.bangla_name);
+					$("#gender").val(value.gender);
+					$("#birth_certificate_no").val(value.birth_certificate_no);
+					$("#religion").val(value.religion);
+					$("#birth_date").val(value.birth_date);
+					$("#blood_group").val(value.blood_grp);
+					$("#previous_school").val(value.previous_school);
+					if (value.image != null){
+						$('#image_preview').attr('src',"http://localhost/School/assets/images/uploaded-images/"+value.image);
+					}
+
+
+
+				})
+
+			}
+		})
+	})
+
+
 	// Date picker
 	$(function () {
 		$("#birth_date").datepicker();
@@ -283,7 +319,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 		readURL(this);
 
 	});
+
+
 </script>
+
 
 
 
