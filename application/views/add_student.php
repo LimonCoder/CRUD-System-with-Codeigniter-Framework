@@ -101,7 +101,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 												<input type="file" id="student_photo" name="student_photo" accept="image/*">
 
 												<span class="required" id="photo_error">
-
+													<?php
+													if (isset($image_error)){
+														echo $image_error;
+													}
+													?>
 												</span>
 											</div>
 										</div>

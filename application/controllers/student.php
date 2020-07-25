@@ -93,10 +93,11 @@ class student extends CI_Controller {
 				$student_info =  array_merge($student_info, array("image"=>$this->upload->data('file_name')));
 			}
 
+
 			if ($this->StudentsDB->student_insert($student_info)){
 				redirect(base_url()."student/inserted");
 			}else{
-
+				redirect(base_url()."student/failed");
 			}
 
 		}else{
