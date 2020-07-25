@@ -124,17 +124,17 @@ class student extends CI_Controller {
 			redirect(base_url()."student/manage_student");
 	}
 
+	public function get_student_info(){
+		$id = $_POST['id'];
+		echo json_encode($this->StudentsDB->single_fetch_data($id));
+	}
+
 	public function student_info_edit(){
 		$data['maincontain'] = $this->load->view('update_student','',true);
 		$this->load->view('pages/adminpage',$data);
 	}
 
 	public function student_info_edit_action(){
-		$id = $_POST['id'];
-		echo json_encode($this->StudentsDB->single_fetch_data($id));
-	}
-
-	public function update_form_validation(){
 		$config = array(
 			array(
 				'field' => 'english_name',

@@ -74,15 +74,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 </div>
 <script>
 	$(document).ready(function() {
-		//var dataTable = $('#student_info').DataTable( {
-		//	"processing":true,
-		//	"serverSide":true,
-		//	"order":[],
-		//	"ajax":{
-		//		url:"<?php //echo base_url() . 'student/all_student_information'; ?>//",
-		//		type:"POST"
-		//	}
-		//} );
+		
 
 		$('#student_info').DataTable({});
 
@@ -91,7 +83,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 			var id = $(this).attr('id');
 
 			if (confirm("Are you delete this Student ?")){
-				window.open("http://localhost/School/student/delete_student_info/"+id,"_self");
+				window.open("http://localhost/school/student/delete_student_info/"+id,"_self");
 			}
 
 		})
@@ -100,7 +92,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 			e.preventDefault();
 			var id = $(this).attr('id');
 
-			window.open("http://localhost/School/student/student_info_edit/"+id,"_self");
+			window.open("http://localhost/school/student/student_info_edit/"+id,"_self");
 
 		})
 

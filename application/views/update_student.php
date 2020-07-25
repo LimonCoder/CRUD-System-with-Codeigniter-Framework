@@ -43,7 +43,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 						<div class="x_content">
 							<br>
-							<form class="form-horizontal" role="form" action="<?=base_url()?>student/update_form_validation" method="post"
+							<form class="form-horizontal" role="form" action="<?=base_url()?>student/student_info_edit_action" method="post"
 								  enctype="multipart/form-data">
 
 								<h4 class="student-head" style="">&nbsp;&nbsp;Student Information </h4>
@@ -266,7 +266,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	$(function () {
 		var sid = <?= $this->uri->segment(3)?>;
 		$.ajax({
-			url:'<?=base_url()?>student/student_info_edit_action',
+			url:'http://localhost/school/student/get_student_info',
 			type:'POST',
 			data:{
 				id:sid
