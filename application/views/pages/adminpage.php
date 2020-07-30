@@ -44,6 +44,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 	<!-- Latest compiled JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<!--sweet alret-->
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
 
@@ -316,6 +318,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<ul class="nav child-nav level-1">
 									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student' )?'active-item':''?>  "><a href="<?=base_url()?>student/add_student">Add Student</a></li>
 									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student' )?'active-item':''?>" ><a href="<?=base_url()?>student/manage_student">Manage Student</a></li>
+
+								</ul>
+							</li>
+							<!-------setting-------->
+							<li class="has-child-item <?=($this->uri->segment(2) == 'session' | $this->uri->segment(2) == '' | $this->uri->segment(2) == '' )?'open-item':'close-item'?>  ">
+								<a><i class="fa fa-cog" aria-hidden="true"></i><span>Settings</span></a>
+								<ul class="nav child-nav level-1">
+									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'session' )?'active-item':''?>  "><a href="<?=base_url()?>settings/session">Session</a></li>
+									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student' )?'active-item':''?>" ><a href="<?=base_url()?>student/manage_student">Class</a></li>
+									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student' )?'active-item':''?>" ><a href="<?=base_url()?>student/manage_student">Section</a></li>
+									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student' )?'active-item':''?>" ><a href="<?=base_url()?>student/manage_student">Group</a></li>
+									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student' )?'active-item':''?>" ><a href="<?=base_url()?>student/manage_student">School Profile</a></li>
 
 								</ul>
 							</li>

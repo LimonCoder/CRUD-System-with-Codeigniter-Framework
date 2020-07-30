@@ -266,7 +266,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	$(function () {
 		var sid = <?= $this->uri->segment(3)?>;
 		$.ajax({
-			url:'http://localhost/school/student/get_student_info',
+			url:'http://localhost/school/student/get_single_student_info',
 			type:'POST',
 			data:{
 				id:sid

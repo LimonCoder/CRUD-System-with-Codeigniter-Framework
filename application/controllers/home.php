@@ -7,7 +7,7 @@ class home extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->library('form_validation');
-		$this->load->model('StudentsDB');
+		$this->load->model('Studentsdb');
 
 	}
 
@@ -49,7 +49,7 @@ class home extends CI_Controller {
 		if ($this->form_validation->run() == true){
 			$email = $this->input->post("email_address");
 			$password = $this->input->post("password");
-			if ($this->StudentsDB->can_login($email,$password)){
+			if ($this->Studentsdb->can_login($email,$password)){
 				$user = array(
 					"email" => $email,
 					"logged_in" => true

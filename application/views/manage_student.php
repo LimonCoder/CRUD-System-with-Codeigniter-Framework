@@ -22,8 +22,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 					<table id="student_info" class="table table-striped table-bordered" style="width:100%">
 						<thead>
 						<tr>
-							<th width="10%">SL No</th>
-							<th width="5%">Photo</th>
+							<th>SL No</th>
+							<th>Photo</th>
 							<th>Student Name</th>
 							<th>Gender</th>
 							<th>Religion</th>
@@ -32,32 +32,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 						</tr>
 						</thead>
 						<tbody>
-						<?php
-							$serial_no = 1;
-							foreach ($student_info as $row){ ?>
-									<tr>
-										<td><?=$serial_no++ ?></td>
-										<?php
-											if ($row->image != null){ ?>
-												<td><img src="<?=base_url()?>assets/images/uploaded-images/<?=$row->image?>" alt="" width="50" height="50"></td>
-									<?php	}else{ ?>
-												<td></td>
-										<?php	}
-										?>
-
-										<td><?=$row->english_name?></td>
-										<td><?=$row->gender?></td>
-										<td><?=$row->religion?></td>
-										<td><?=$row->birth_date?></td>
-										<td>
-											<a href="#" class="btn btn-warning updateinfo" id="<?= $row->id?>" >Edit</a>
-											<a href="#" class="btn btn-danger deleteinfo" id="<?= $row->id?>" >Delete</a>
-										</td>
-									</tr>
-					<?php		}
-						?>
-
-
 
 
 
@@ -74,27 +48,41 @@ defined('BASEPATH') or exit('No direct script access allowed');
 </div>
 <script>
 	$(document).ready(function() {
-		
 
-		$('#student_info').DataTable({});
+		// Server side processing data table //
+		var dataTable =	$('#student_info').DataTable({
+			"processing":true,
+			"serverSide":true,
+			"order":[],
+			"ajax":{
+				url:"http://localhost/school/student/get_student_info",
+				type:"POST"
+			}
+		});
 
-		$(".deleteinfo").click(function (e) {
-			e.preventDefault();
-			var id = $(this).attr('id');
 
-			if (confirm("Are you delete this Student ?")){
+
+		$(document).on('click', '#delete', function(){
+			var id = $(this).data('id');
+			if(confirm("Are you sure you want to delete this?"))
+			{
 				window.open("http://localhost/school/student/delete_student_info/"+id,"_self");
 			}
+			else
+			{
+				return false;
+			}
+		});
 
-		})
-
-		$(".updateinfo").click(function (e) {
+		$(document).on('click','#update',function (e) {
 			e.preventDefault();
-			var id = $(this).attr('id');
-
+			var id = $(this).data('id');
 			window.open("http://localhost/school/student/student_info_edit/"+id,"_self");
-
 		})
+
+
+
+
 
 	} );
 </script>

@@ -7,7 +7,7 @@ class student extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->library('form_validation');
-		$this->load->model('StudentsDB');
+		$this->load->model('Studentsdb');
 	}
 
 	public function add_student(){
@@ -94,7 +94,7 @@ class student extends CI_Controller {
 			}
 
 
-			if ($this->StudentsDB->student_insert($student_info)){
+			if ($this->Studentsdb->student_insert($student_info)){
 				redirect(base_url()."student/inserted");
 			}else{
 				redirect(base_url()."student/failed");
@@ -110,23 +110,60 @@ class student extends CI_Controller {
 
 
 	public function manage_student(){
-		$info['student_info'] = $this->StudentsDB->fatch_data();
-		$data['maincontain'] = $this->load->view('manage_student',$info,true);
-		$this->load->view('pages/adminpage',$data);
+
+		$data["maincontain"] = $this->load->view("manage_student",'',true);
+		$this->load->view("pages/adminpage",$data);
+
+	}
 
 
+	public function get_student_info(){
+		$serial_no = 1;
+		$fetch_data = $this->Studentsdb->make_datable();
+
+		$student_info = array();
+		foreach ($fetch_data as $row){
+			$sub_array = array();
+			$sub_array[] = $serial_no++;
+			if ($row->image !== NULL)
+			{
+				$sub_array[] = '<img src="'.base_url().'assets/images/uploaded-images/'.$row->image.'" class="img-thumbnail" width="50" height="35" />';
+			}else
+			{
+				$sub_array[] = "";
+			}
+			$sub_array[] = $row->english_name;
+			$sub_array[] = $row->gender;
+			$sub_array[] = $row->religion;
+			$sub_array[] = $row->birth_date;
+			$sub_array[] = '<button type="button" name="update" id="update" data-id="'.$row->id.'" class="btn btn-warning">Edit</button>
+							<button type="button" name="delete" id="delete" data-id="'.$row->id.'" class="btn btn-danger">Delete</button>
+							';
+			$student_info[] = $sub_array;
+		}
+
+		$output = array(
+			"draw"                    =>     intval($_POST["draw"]),
+			"recordsTotal"          =>      $this->Studentsdb->get_all_data(),
+			"recordsFiltered"     =>     $this->Studentsdb->get_filtered_data(),
+			"data"                    =>     $student_info
+		);
+
+		echo json_encode($output);
+
+
+	}
+
+	public function get_single_student_info(){
+		$id = $_POST['id'];
+		echo json_encode($this->Studentsdb->single_fetch_data($id));
 	}
 
 
 	public function delete_student_info(){
 			$id = $this->uri->segment(3);
-			$this->StudentsDB->delete_single_fetch($id);
+			$this->Studentsdb->delete_single_fetch($id);
 			redirect(base_url()."student/manage_student");
-	}
-
-	public function get_student_info(){
-		$id = $_POST['id'];
-		echo json_encode($this->StudentsDB->single_fetch_data($id));
 	}
 
 	public function student_info_edit(){
@@ -205,7 +242,7 @@ class student extends CI_Controller {
 				$student_info =  array_merge($student_info, array("image"=>$this->upload->data('file_name')));
 			}
 
-			if ($this->StudentsDB->update_single_fetch($student_info,$this->input->post('id_no'))){
+			if ($this->Studentsdb->update_single_fetch($student_info,$this->input->post('id_no'))){
 				redirect(base_url()."student/student_info_edit/".$this->input->post('id_no'));
 			}else{
 
@@ -223,6 +260,8 @@ class student extends CI_Controller {
 		$data['maincontain'] = $this->load->view('add_student','',true);
 		$this->load->view('pages/adminpage',$data);
 	}
+
+
 
 
 

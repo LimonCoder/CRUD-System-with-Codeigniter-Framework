@@ -378,7 +378,7 @@ abstract class CI_DB_driver {
 	// --------------------------------------------------------------------
 
 	/**
-	 * Initialize Database Settings
+	 * Initialize Database settings
 	 *
 	 * @return	bool
 	 */
