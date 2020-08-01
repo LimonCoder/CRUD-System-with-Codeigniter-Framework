@@ -23,11 +23,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 						<thead>
 						<tr>
 							<th>SL No</th>
-							<th>Photo</th>
+							<th>Session</th>
+							<th>Image</th>
 							<th>Student Name</th>
 							<th>Gender</th>
-							<th>Religion</th>
-							<th>Date of Birth</th>
+							<th>Previous School</th>
 							<th>Action</th>
 						</tr>
 						</thead>

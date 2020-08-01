@@ -4,8 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Studentsdb extends CI_Model {
 
 	private $table_name = "add_student";
-	private $select_colum = array("id","english_name","gender","religion","birth_date","image");
-	private $order_colum = array("english_name","gender","religion","birth_date");
+	private $select_colum = array("i.id","s.session_name","a.image","a.english_name", "a.gender","i.previous_school");
+	private $order_colum = array("a.english_name","a.gender","s.session_name","i.previous_school");
 
 	public function can_login($email,$password){
 		$this->db->where("email",$email);
@@ -18,14 +18,23 @@ class Studentsdb extends CI_Model {
 		}
 	}
 
-	public function student_insert($data){
-		$query = $this->db->insert("add_student",$data);
-		return $query;
+	public function student_insert($stduent_info,$academic_info){
+
+		$this->db->trans_start();
+		$this->db->insert("add_student",$stduent_info);
+		$academic_info = array_merge($academic_info,array("student_id"=>$this->db->insert_id()));
+		$this->db->insert("student_academic_info",$academic_info);
+		$this->db->trans_complete();
+
+		return $this->db->trans_status() ;
+
+
+
 
 	}
 
 	public function fatch_data(){
-		$query = $this->db->get("add_student");
+		$query = $this->db->get();
 		return $query->result();
 	}
 
@@ -49,21 +58,28 @@ class Studentsdb extends CI_Model {
 
 
 
+
+
 	//  server side datatables //
 	public function make_query(){
 		$this->db->select($this->select_colum);
-		 $this->db->from($this->table_name);
+		$this->db->from('student_academic_info i');
+		$this->db->join('add_student a', 'i.student_id = a.id');
+		$this->db->join('session s', 'i.session_id = s.id');
+		$this->db->where('s.is_current',1);
 
 		 if (isset($_POST['search']['value'])){
-		 	$this->db->like("english_name",$_POST['search']['value']);
-		 	$this->db->or_like("gender",$_POST['search']['value']);
-		 	$this->db->or_like("religion",$_POST['search']['value']);
+		 	$this->db->group_start();
+		 	$this->db->like("a.english_name",$_POST['search']['value']);
+		 	$this->db->or_like("a.gender",$_POST['search']['value']);
+		 	$this->db->or_like("s.session_name",$_POST['search']['value']);
+		 	$this->db->or_like("i.previous_school",$_POST['search']['value']);
+		 	$this->db->group_end();
 		 }
-
 		 if (isset($_POST['order'])){
 			 $this->db->order_by($this->select_colum[$_POST['order'][0]['column']], $_POST['order'][0]['dir']);
 		 }else{
-		 	$this->db->order_by("id","DESC");
+			 $this->db->order_by('i.id','desc');
 		 }
 
 	}

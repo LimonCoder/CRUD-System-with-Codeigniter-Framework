@@ -247,6 +247,54 @@ defined('BASEPATH') or exit('No direct script access allowed');
 			})
 		})
 
+		// delete session
+		$(document).on("click","#delete_session",function (e) {
+			e.preventDefault();
+			var sid = $(this).data('id');
+			swal({
+				title: "Are you sure?",
+				text: "Once deleted, you want to delete it ?",
+				icon: "warning",
+				buttons: true,
+				dangerMode: true,
+			})
+					.then((willDelete) => {
+						if (willDelete) {
+
+							$.ajax({
+								url:'http://localhost/school/settings/session_delete_action',
+								type:'post',
+								data:{id:sid},
+								dataType:'json',
+								success:function (result) {
+									if(result){
+										swal("Poof! Session has been deleted!", {
+											icon: "success",
+											buttons:false,
+											timer:1500
+										});
+									}else {
+
+									}
+									// datable reloading after session inserted //
+									dataTable.ajax.reload();
+								}
+							})
+						}
+					});
+
+
+
+		})
+
+
+		//current session
+		$(document).on("click","#is_current_session",function (e) {
+			e.preventDefault();
+			alert("Session is now current");
+
+		})
+
 
 
 		//

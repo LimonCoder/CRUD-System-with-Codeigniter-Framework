@@ -67,9 +67,8 @@ class settings extends CI_Controller
 			$sub_array[] = $serial_no++;
 			$sub_array[] = $row->session_name;
 			$sub_array[] = ($row->is_current == 1)?'<label class="label label-primary" style="font-size:12px;">Current</label>':'';
-			$sub_array[] = '<button type="button" name="update_session" id="update_session" data-id="'.$row->id.'" class="btn btn-warning">Edit</button>
-							<button type="button" name="delete_session" id="delete_session" data-id="'.$row->id.'" class="btn btn-danger">Delete</button>
-							';
+			$delete_button = ($row->is_current == 1)?'<button type="button" name="delete_session" id="is_current_session" class="btn btn-danger">Delete</button>':'<button type="button" name="delete_session" id="delete_session" data-id="'.$row->id.'" class="btn btn-danger">Delete</button>';
+			$sub_array[] = '<button type="button" name="update_session" id="update_session" data-id="'.$row->id.'" class="btn btn-warning"  >Edit</button> '.$delete_button;
 			$student_info[] = $sub_array;
 		}
 
@@ -127,6 +126,19 @@ class settings extends CI_Controller
 
 
 
+
+	}
+
+	public function session_delete_action(){
+
+		$id = $_POST['id'];
+
+		if ($this->Settingsdb->single_session_delete($id))
+		{
+			echo json_encode(array("TRUE"));
+		}else{
+			echo json_encode(array("FALSE"));
+		}
 
 	}
 

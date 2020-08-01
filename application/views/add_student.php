@@ -60,7 +60,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 											<div class="col-md-8 col-sm-8 col-xs-12" style="margin-top: 30px;">
 
 												<input type="text" id="english_name" name="english_name"
-													   class="form-control" value="">
+													   class="form-control" value="<?= set_value("english_name"); ?>">
 
 												<span class="required" id="english_name_error"><?= form_error('english_name')?></span>
 
@@ -89,7 +89,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 											</label>
 											<div class="col-md-8 col-sm-8 col-xs-12">
 												<input type="text" id="bangla_name" name="bangla_name"
-													   class="form-control col-md-7 col-xs-12">
+													   class="form-control col-md-7 col-xs-12" value="<?= set_value("bangla_name"); ?>">
 											</div>
 										</div>
 
@@ -118,7 +118,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 														class="required">*</span>
 											</label>
 											<div class="col-md-8 col-sm-8 col-xs-12">
-												<select class="form-control " name="gender" id="gender">
+												<select class="form-control " name="gender" id="gender" >
 													<option value="">Select</option>
 
 													<option value="Male">Male</option>
@@ -141,7 +141,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 											</label>
 											<div class="col-md-8 col-sm-8 col-xs-12">
 												<input type="text" id="birth_date" name="birth_date"
-													   class="form-control">
+													   class="form-control" value="<?= set_value("birth_date"); ?>">
 												<span class="required"><?=form_error("birth_date")?></span>
 											</div>
 										</div>
@@ -151,11 +151,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 										<div class="form-group col-md-6">
 											<label class="control-label col-md-4 col-sm-4 col-xs-12 pull-left"
-												   for="birth_certificate_no">Birth Certificate No<span class="required">*</span>
+												   for="birth_certificate_no">Birth Certificate No
 											</label>
 											<div class="col-md-8 col-sm-8 col-xs-12">
 												<input type="text" id="birth_certificate_no" name="birth_certificate_no"
-													   class="form-control col-md-7 col-xs-12">
+													   class="form-control col-md-7 col-xs-12" value="<?= set_value("birth_certificate_no"); ?>">
 												<span class="required"><?=form_error("birth_certificate_no")?></span>
 											</div>
 										</div>
@@ -165,7 +165,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 												Group
 											</label>
 											<div class="col-md-8 col-sm-8 col-xs-12">
-												<select class="form-control" name="blood_group" id="blood_group">
+												<select class="form-control" name="blood_group" id="blood_group" >
 													<option value=""> Select</option>
 
 													<option value="A+">A+</option>
@@ -194,6 +194,86 @@ defined('BASEPATH') or exit('No direct script access allowed');
 									<div class="row" style="margin-top: 10px;">
 										<div class="form-group col-md-6">
 											<label for="previous_school"
+												   class="control-label col-md-4 col-sm-4 col-xs-12">Session<span
+														class="required">*</span>
+											</label>
+											<div class="col-md-8 col-sm-8 col-xs-12">
+												<select class="form-control" name="session" id="session">
+													<option value="">Select</option>
+													<?php
+														foreach($session_values as $row){ ?>
+															<option value="<?= $row->id?>"><?= $row->session_name?></option>
+												<?php		}
+													?>
+
+												</select>
+												<span class="required" id="session_error"><?=form_error("session")?>
+                                                      </span>
+											</div>
+										</div>
+
+										<div class="form-group col-md-6">
+											<label class="control-label col-md-4 col-sm-4 col-xs-12"
+												   for="previous_school">Class<span class="required">*</span>
+											</label>
+											<div class="col-md-8 col-sm-8 col-xs-12">
+												<select class="form-control" name="class" id="class">
+													<option value="">Select</option>
+													<option value="5">Five</option>
+													<option value="6">Six</option>
+													<option value="7">Seven</option>
+													<option value="8">Eight</option>
+													<option value="9">Nine</option>
+													<option value="10">Ten</option>
+
+												</select>
+												<span class="required" id="class_error"><?=form_error("class")?>
+                                                      </span>
+
+
+											</div>
+										</div>
+									</div>
+									<div class="row" style="margin-top: 10px;">
+										<div class="form-group col-md-6">
+											<label for="section"
+												   class="control-label col-md-4 col-sm-4 col-xs-12">Section<span
+														class="required">*</span>
+											</label>
+											<div class="col-md-8 col-sm-8 col-xs-12">
+												<select class="form-control" name="section" id="section">
+													<option value="">Select</option>
+													<option value="1">A</option>
+													<option value="2">B</option>
+													<option value="3">c</option>
+
+
+												</select>
+												<span class="required" id="section_error"><?=form_error("section")?>
+                                                      </span>
+											</div>
+										</div>
+
+										<div class="form-group col-md-6" id="group_sec" style="display: none">
+											<label class="control-label col-md-4 col-sm-4 col-xs-12"
+												   for="group">Group
+											</label>
+											<div class="col-md-8 col-sm-8 col-xs-12">
+												<select class="form-control" name="group" id="group">
+													<option value="">Select</option>
+													<option value="1">Science</option>
+													<option value="2">Commarce</option>
+													<option value="3">Arts</option>
+
+												</select>
+
+
+											</div>
+										</div>
+									</div>
+									<div class="row" style="margin-top: 10px;">
+										<div class="form-group col-md-6">
+											<label for="previous_school"
 												   class="control-label col-md-4 col-sm-4 col-xs-12">Religion <span
 														class="required">*</span>
 											</label>
@@ -217,11 +297,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 										<div class="form-group col-md-6">
 											<label class="control-label col-md-4 col-sm-4 col-xs-12"
-												   for="previous_school">Previous School Name
+												   for="previous_school">Previous School Name<span
+														class="required">*</span>
 											</label>
 											<div class="col-md-8 col-sm-8 col-xs-12">
 												<input type="text" id="previous_school" name="previous_school"
-													   class="form-control" value="">
+													   class="form-control" value="<?= set_value("previous_school"); ?>">
 
 
 											</div>
@@ -265,8 +346,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <!-- CONTENT -->
 <script>
 
-	// Date picker
+
 	$(function () {
+		// Date picker
 		$("#birth_date").datepicker();
 	})
 
@@ -287,6 +369,20 @@ defined('BASEPATH') or exit('No direct script access allowed');
 		readURL(this);
 
 	});
+
+
+	//
+	$(document).on("change","#class",function (e) {
+		e.preventDefault();
+		var id = $(this).val();
+
+		if (id != '' && id >8){
+			$("#group_sec").css("display", "block");
+		}else{
+			$("#group_sec").css("display", "none");
+		}
+
+	})
 </script>
 
 

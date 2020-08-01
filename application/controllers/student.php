@@ -8,11 +8,13 @@ class student extends CI_Controller {
 		parent::__construct();
 		$this->load->library('form_validation');
 		$this->load->model('Studentsdb');
+		$this->load->model('Settingsdb');
 	}
 
 	public function add_student(){
 		if ($this->session->userdata("email") != ''){
-			$data['maincontain'] = $this->load->view('add_student','',true);
+			$session['session_values'] = $this->Settingsdb->get_session_name();
+			$data['maincontain'] = $this->load->view('add_student',$session,true);
 			$this->load->view('pages/adminpage',$data);
 		}else{
 			redirect(base_url()."home/login");
@@ -23,60 +25,89 @@ class student extends CI_Controller {
 
 	public function addstudent_form_validation(){
 
-		$config = array(
+		$student_info = array(
 			array(
-				'field' => 'english_name',
-				'label' => 'English Name',
-				'rules' => 'required'
+					'field' => 'english_name',
+					'label' => 'English Name',
+					'rules' => 'required'
 
-			),
-			array(
-				'field' => 'bangla_name',
-				'label' => 'Bangla Name',
-				'rules' => ''
+				),
+				array(
+					'field' => 'bangla_name',
+					'label' => 'Bangla Name',
+					'rules' => ''
 
-			),
-			array(
-				'field' => 'gender',
-				'label' => 'Gender',
-				'rules' => 'required'
-			),
-			array(
-				'field' => 'birth_date',
-				'label' => 'Birth Date',
-				'rules' => 'required'
-			),
-			array(
-				'field' => 'birth_certificate_no',
-				'label' => 'Birth Certificate',
-				'rules' => 'required|exact_length[13]|is_unique[add_student.birth_certificate_no]'
-			),
-			array(
-				'field' => 'blood_group',
-				'label' => 'Blood Group',
-				'rules' => '' // callback function callback_(function_name)
-			),
-			array(
-				'field' => 'religion',
-				'label' => 'Religion',
-				'rules' => 'required'
-			),array(
-				'field' => 'previous_school',
-				'label' => 'Previous School',
-				'rules' => ''
-			)
+				),
+				array(
+					'field' => 'gender',
+					'label' => 'Gender',
+					'rules' => 'required'
+				),
+				array(
+					'field' => 'birth_date',
+					'label' => 'Birth Date',
+					'rules' => 'required'
+				),
+				array(
+					'field' => 'birth_certificate_no',
+					'label' => 'Birth Certificate',
+					'rules' => 'required|exact_length[13]|is_unique[add_student.birth_certificate_no]'
+				),
+				array(
+					'field' => 'blood_group',
+					'label' => 'Blood Group',
+					'rules' => ''
+				),
+				array(
+					'field' => 'religion',
+					'label' => 'Religion',
+					'rules' => 'required'
+				)
+
+
+
 
 		);
+		$academic_info = array(
+				array(
+					'field' => 'session',
+					'label' => 'Session',
+					'rules' => 'required'
+				),
+				array(
+					'field' => 'class',
+					'label' => 'Class',
+					'rules' => 'required'
+				),
+				array(
+					'field' => 'section',
+					'label' => 'Section',
+					'rules' => 'required'
+				),
+				array(
+					'field' => 'group',
+					'label' => 'Group',
+					'rules' => ''
+				),
+				array(
+					'field' => 'previous_school',
+					'label' => 'Previous School',
+					'rules' => 'required'
+				)
+
+		);
+
 
 			$image_config['upload_path']          = './assets/images/uploaded-images';
 			$image_config['allowed_types']        = 'gif|jpg|png';
 			$image_config['encrypt_name'] = true;
 			$this->load->library('upload', $image_config);
 
-			$this->form_validation->set_rules($config);
+			$this->form_validation->set_rules($student_info);
+			$this->form_validation->set_rules($academic_info);
 
-		if ($this->form_validation->run() == true){
-
+		if ($this->form_validation->run() == true)
+		{
 			$student_info = array(
 				"english_name" => $this->input->post('english_name'),
 				"bangla_name" => $this->input->post('bangla_name'),
@@ -85,7 +116,7 @@ class student extends CI_Controller {
 				"birth_certificate_no" => $this->input->post('birth_certificate_no'),
 				"blood_grp" => $this->input->post('blood_group'),
 				"religion" => $this->input->post('religion'),
-				"previous_school" => $this->input->post('previous_school')
+				"created_by_ip" => $_SERVER['REMOTE_ADDR']
 
 			);
 			// when image is selected
@@ -93,16 +124,26 @@ class student extends CI_Controller {
 				$student_info =  array_merge($student_info, array("image"=>$this->upload->data('file_name')));
 			}
 
+			$acdemic_info = array(
+				"session_id" =>  $this->input->post('session'),
+				"class_id" =>  $this->input->post('class'),
+				"section_id" =>  $this->input->post('section'),
+				"group_id" =>  $this->input->post('group'),
+				"previous_school" =>  $this->input->post('previous_school')
+			);
 
-			if ($this->Studentsdb->student_insert($student_info)){
+
+
+
+			if ($this->Studentsdb->student_insert($student_info,$acdemic_info)){
 				redirect(base_url()."student/inserted");
 			}else{
 				redirect(base_url()."student/failed");
 			}
 
 		}else{
-
 			$this->add_student();
+
 		}
 
 
@@ -125,6 +166,7 @@ class student extends CI_Controller {
 		foreach ($fetch_data as $row){
 			$sub_array = array();
 			$sub_array[] = $serial_no++;
+			$sub_array[] = $row->session_name;
 			if ($row->image !== NULL)
 			{
 				$sub_array[] = '<img src="'.base_url().'assets/images/uploaded-images/'.$row->image.'" class="img-thumbnail" width="50" height="35" />';
@@ -134,8 +176,7 @@ class student extends CI_Controller {
 			}
 			$sub_array[] = $row->english_name;
 			$sub_array[] = $row->gender;
-			$sub_array[] = $row->religion;
-			$sub_array[] = $row->birth_date;
+			$sub_array[] = $row->previous_school;
 			$sub_array[] = '<button type="button" name="update" id="update" data-id="'.$row->id.'" class="btn btn-warning">Edit</button>
 							<button type="button" name="delete" id="delete" data-id="'.$row->id.'" class="btn btn-danger">Delete</button>
 							';

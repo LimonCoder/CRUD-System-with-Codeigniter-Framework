@@ -53,6 +53,17 @@ class Settingsdb extends CI_Model
 
 	}
 
+	public function single_session_delete($id){
+		$this->db->where("id",$id);
+		$query = $this->db->delete("session");
+		return $query;
+	}
+	public function get_session_name(){
+		$this->db->select(array("id","session_name"));
+		$query = $this->db->get("session");
+		return $query->result();
+	}
+
 
 	public function session_make_query(){
 		$this->db->select($this->select_colum);
