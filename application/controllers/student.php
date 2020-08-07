@@ -7,14 +7,20 @@ class student extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->library('form_validation');
+		$this->load->library("excel");
+		$this->load->library("Csvimport");
 		$this->load->model('Studentsdb');
 		$this->load->model('Settingsdb');
+		$this->load->model('Sectiondb');
+		$this->load->model('Classdb');
 	}
 
 	public function add_student(){
 		if ($this->session->userdata("email") != ''){
-			$session['session_values'] = $this->Settingsdb->get_session_name();
-			$data['maincontain'] = $this->load->view('add_student',$session,true);
+			$info['session_values'] = $this->Settingsdb->get_session_name();
+			$info['class_values'] = $this->Classdb->get_class();
+
+			$data['maincontain'] = $this->load->view('add_student',$info,true);
 			$this->load->view('pages/adminpage',$data);
 		}else{
 			redirect(base_url()."home/login");
@@ -177,8 +183,8 @@ class student extends CI_Controller {
 			$sub_array[] = $row->english_name;
 			$sub_array[] = $row->gender;
 			$sub_array[] = $row->previous_school;
-			$sub_array[] = '<button type="button" name="update" id="update" data-id="'.$row->id.'" class="btn btn-warning">Edit</button>
-							<button type="button" name="delete" id="delete" data-id="'.$row->id.'" class="btn btn-danger">Delete</button>
+			$sub_array[] = '<button type="button" name="update" id="update" data-id="'.$row->sid.'" class="btn btn-warning">Edit</button>
+							<button type="button" name="delete" id="delete" data-id="'.$row->sid.'" class="btn btn-danger">Delete</button>
 							';
 			$student_info[] = $sub_array;
 		}
@@ -202,9 +208,10 @@ class student extends CI_Controller {
 
 
 	public function delete_student_info(){
-			$id = $this->uri->segment(3);
-			$this->Studentsdb->delete_single_fetch($id);
-			redirect(base_url()."student/manage_student");
+		$id = $_POST['deleteid'];
+	  $results = $this->Studentsdb->delete_single_fetch($id);
+	  echo $results;
+
 	}
 
 	public function student_info_edit(){
@@ -293,6 +300,150 @@ class student extends CI_Controller {
 
 			$this->student_info_edit();
 		}
+	}
+
+	public function csvfile()
+	{
+		$data['session_name'] = $this->Settingsdb->get_session_name();
+		$data['maincontain'] = $this->load->view('csvfile',$data,true);
+
+		$this->load->view('pages/adminpage',$data);
+	}
+
+	public function checking_csvfile(){
+		$line = 1;
+		$csv_info = $this->csvimport->get_array($_FILES['csv_file']['tmp_name']);
+
+
+		foreach ($csv_info as $row){
+			++$line;
+			if (is_numeric($row['english_name'])){
+				echo "<h5 style='color: red'>[English_Name] only charecter ! error line : $line<h5>";
+			}
+			if (is_numeric($row['bangla_name'])){
+				echo "<h5 style='color: red'>[bangla_name] only charecter ! error line : $line<h5>";
+			}
+			if (!is_numeric($row['gende'])){
+				echo "<h5 style='color: red'>[gender] only number ! error line : $line<h5>";
+			}else{
+				if (!in_array($row['gende'],array("1","2"))){
+					echo "<h5 style='color: red'>[gender] Male = 1 and Female = 2 ! error line : $line<h5>";
+				}
+			}
+
+
+
+
+
+
+		}
+
+
+
+
+
+	}
+
+	public function process_csv(){
+
+
+		$info = $this->csvimport->get_array($_FILES['csv_file']['tmp_name']);
+
+
+
+		foreach ($info as $row){
+
+			if ($row['gende'] == 1){
+				$gender = "Male";
+			}else{
+				$gender = "Female";
+			}
+
+			if ($row['eligio'] ==1) {
+				$religion = "Islam";
+			}elseif ($row['eligio'] == 2){
+				$religion = "Hindu";
+			}elseif ($row['eligio'] == 3){
+				$religion = "Christhan";
+			}
+
+			$student_info[] = array(
+				'english_name' => $row['english_name'],
+				'bangla_name' => $row['bangla_name'],
+				'gender' => $gender,
+				'birth_date' => $row['birth_date'],
+				'religion' =>$religion
+
+			);
+			$academic_info[] = array(
+				"session_id" => $_POST['session_id'],
+				"class_id" => $row['class'],
+				"section_id" => $row['sectio'],
+				"group_id" => $row['grp']
+			);
+
+
+		}
+
+	   echo $this->Studentsdb->student_csvfile_insert($student_info,$academic_info);
+
+
+
+
+
+
+
+
+	}
+
+	public function student_info_export_excel()
+	{
+		$object = new PHPExcel();
+		$object->setActiveSheetIndex(0);
+		$table_columns = array("Session", "Name", "Gender", "Perious_school");
+		$column = 0;
+
+		foreach($table_columns as $field)
+		{
+			$object->getActiveSheet()->setCellValueByColumnAndRow($column, 1, $field);
+			$column++;
+		}
+
+		$student_data = $this->Studentsdb->make_datable();
+
+		$excel_row = 2;
+
+		foreach($student_data as $row)
+		{
+			$object->getActiveSheet()->setCellValueByColumnAndRow(0, $excel_row, $row->session_name );
+			$object->getActiveSheet()->setCellValueByColumnAndRow(1, $excel_row, $row->english_name);
+			$object->getActiveSheet()->setCellValueByColumnAndRow(2, $excel_row, $row->gender );
+			$object->getActiveSheet()->setCellValueByColumnAndRow(3, $excel_row, $row->previous_school);
+			$excel_row++;
+		}
+
+		$object_writer = PHPExcel_IOFactory::createWriter($object, 'Excel5');
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment;filename="Student_Information.xlsx"');
+		$object_writer->save('php://output');
+
+	}
+
+	public function student_info_export_pdf(){
+
+	}
+
+	public function get_sectionByclass(){
+		$id = $_POST['classid'];
+		$res =$this->Sectiondb->get_section_by_class($id);
+
+		$output ='<option value="">Select</option>';
+		foreach ($res as $row){
+			$output .= '<option value="'.$row->id.'">'.$row->section_name.'</option>';
+		}
+
+		echo $output;
+
 	}
 
 
