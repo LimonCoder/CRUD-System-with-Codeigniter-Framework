@@ -217,14 +217,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 												   for="previous_school">Class<span class="required">*</span>
 											</label>
 											<div class="col-md-8 col-sm-8 col-xs-12">
-												<select class="form-control" name="class" id="class">
+												<select class="form-control" name="class" id="class" >
 													<option value="">Select</option>
-													<option value="5">Five</option>
-													<option value="6">Six</option>
-													<option value="7">Seven</option>
-													<option value="8">Eight</option>
-													<option value="9">Nine</option>
-													<option value="10">Ten</option>
+													<?php foreach ($class_values as $row):?>
+													<option value="<?=$row->id?>"><?=$row->class_name?></option>
+													<?php endforeach; ?>
 
 												</select>
 												<span class="required" id="class_error"><?=form_error("class")?>
@@ -243,11 +240,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 											<div class="col-md-8 col-sm-8 col-xs-12">
 												<select class="form-control" name="section" id="section">
 													<option value="">Select</option>
-													<option value="1">A</option>
-													<option value="2">B</option>
-													<option value="3">c</option>
-
-
 												</select>
 												<span class="required" id="section_error"><?=form_error("section")?>
                                                       </span>
@@ -347,6 +339,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 <script>
 
 
+
+
 	$(function () {
 		// Date picker
 		$("#birth_date").datepicker();
@@ -376,13 +370,31 @@ defined('BASEPATH') or exit('No direct script access allowed');
 		e.preventDefault();
 		var id = $(this).val();
 
+
+		if (id != ''){
+			$.ajax({
+				url:"http://localhost/school/student/get_sectionByclass",
+				type:'post',
+				data:{'classid':id},
+				success:function (res) {
+					$("#section").html(res);
+				}
+			})
+		}else {
+			$("#section").html('<option value="">Select</option>');
+		}
+
 		if (id != '' && id >8){
 			$("#group_sec").css("display", "block");
 		}else{
 			$("#group_sec").css("display", "none");
 		}
 
+
 	})
+
+
+
 </script>
 
 
