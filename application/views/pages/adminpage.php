@@ -51,6 +51,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 
+
+
 </head>
 
 <body>
@@ -313,21 +315,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<!--HOME-->
 							<li class="<?=($this->uri->segment(2) == 'deshboard')?'active-item':''?>"><a href="<?=base_url()?>home/deshboard"><i class="fa fa-home" aria-hidden="true"></i><span>Dashboard</span></a></li>
 							<!--Student-->
-							<li class="has-child-item <?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student' | $this->uri->segment(2) == 'student_info_edit' )?'open-item':'close-item'?>  ">
+							<li class="has-child-item <?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student' | $this->uri->segment(2) == 'student_info_edit' | $this->uri->segment(2) == 'csvfile' )?'open-item':'close-item'?>  ">
 								<a><i class="fa fa-user" aria-hidden="true"></i><span>Student</span></a>
 								<ul class="nav child-nav level-1">
-									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student' )?'active-item':''?>  "><a href="<?=base_url()?>student/add_student">Add Student</a></li>
-									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student' )?'active-item':''?>" ><a href="<?=base_url()?>student/manage_student">Manage Student</a></li>
+									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student'  )?'active-item':''?>  "><a href="<?=base_url()?>student/add_student">Add Student</a></li>
+									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student'  )?'active-item':''?>" ><a href="<?=base_url()?>student/manage_student">Manage Student</a></li>
+									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student' | $this->uri->segment(2) == 'csvfile'   )?'active-item':''?>" ><a href="<?=base_url()?>student/csvfile">Csv File Upload</a></li>
 
 								</ul>
 							</li>
 							<!-------setting-------->
-							<li class="has-child-item <?=($this->uri->segment(2) == 'session' | $this->uri->segment(2) == '' | $this->uri->segment(2) == '' )?'open-item':'close-item'?>  ">
+							<li class="has-child-item <?=($this->uri->segment(2) == 'session' | $this->uri->segment(2) == 'section' | $this->uri->segment(2) == '' )?'open-item':'close-item'?>  ">
 								<a><i class="fa fa-cog" aria-hidden="true"></i><span>Settings</span></a>
 								<ul class="nav child-nav level-1">
 									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'session' )?'active-item':''?>  "><a href="<?=base_url()?>settings/session">Session</a></li>
-									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student' )?'active-item':''?>" ><a href="<?=base_url()?>student/manage_student">Class</a></li>
-									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student' )?'active-item':''?>" ><a href="<?=base_url()?>student/manage_student">Section</a></li>
+									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'class' )?'active-item':''?>" ><a href="<?=base_url()?>settings/student_class">Class</a></li>
+									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'section' )?'active-item':''?>" ><a href="<?=base_url()?>settings/section">Section</a></li>
 									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student' )?'active-item':''?>" ><a href="<?=base_url()?>student/manage_student">Group</a></li>
 									<li class="<?=($this->uri->segment(2) == 'add_student' | $this->uri->segment(2) == 'manage_student' )?'active-item':''?>" ><a href="<?=base_url()?>student/manage_student">School Profile</a></li>
 
@@ -368,6 +371,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <!--Examples-->
 <script src="<?=base_url()?>assets/javascripts/examples/dashboard.js"></script>
 <script src="<?=base_url()?>assets/javascripts/custom.js"></script>
+
+
 
 </body>
 
