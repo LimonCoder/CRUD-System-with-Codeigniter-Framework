@@ -17,7 +17,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 	<!-- =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= -->
 	<div class="row animated fadeInUp">
 		<div class="col-sm-12 col-lg-12">
-			<div class="row">
+			<form action="<?=base_url()?>student/student_info_export_excel">
+			<button type="submit" class="btn btn-success pull-right" style="margin:5px">Excel</button>
+			</form>
+			<div class="row" style="margin-top: 5px">
 				<div class="col-md-12 col-lg-12">
 					<table id="student_info" class="table table-striped table-bordered" style="width:100%">
 						<thead>
@@ -62,11 +65,26 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 
 
+
 		$(document).on('click', '#delete', function(){
 			var id = $(this).data('id');
 			if(confirm("Are you sure you want to delete this?"))
 			{
-				window.open("http://localhost/school/student/delete_student_info/"+id,"_self");
+				$.ajax({
+					url: 'http://localhost/school/student/delete_student_info',
+					type:'post',
+					data:{deleteid:id},
+					success:function (res) {
+						swal({
+							title: "Delete !!",
+							text: "This student has been deleted !",
+							icon: "success",
+							buttons: false,
+							timer:2000
+						});
+						dataTable.ajax.reload();
+					}
+				})
 			}
 			else
 			{
