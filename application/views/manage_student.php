@@ -98,6 +98,19 @@ defined('BASEPATH') or exit('No direct script access allowed');
 			window.open("http://localhost/school/student/student_info_edit/"+id,"_self");
 		})
 
+		// student_info view //
+		$(document).on('click','#student_view',function (e) {
+			e.preventDefault();
+			var id = $(this).data('id');
+			window.open("http://localhost/school/student/view/"+id,"_self");
+		})
+
+		// student_info print //
+		$(document).on('click','#student_print',function (e) {
+			e.preventDefault();
+			var id = $(this).data('id');
+			window.open("http://localhost/school/student/student_print/"+id,"_self");
+		})
 
 
 

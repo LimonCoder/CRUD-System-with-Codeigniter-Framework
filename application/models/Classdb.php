@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Classdb extends CI_Model
 {
+	private $select_colum = array("SL", "Class","Section","Group","Sorting");
 
 	public function class_insert($data,$section){
 		$this->db->trans_start();
