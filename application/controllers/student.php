@@ -1,6 +1,9 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+require_once __DIR__ .'../../libraries/vendor/autoload.php';
+
+
 class student extends CI_Controller {
 
 	public function __construct()
@@ -183,9 +186,12 @@ class student extends CI_Controller {
 			$sub_array[] = $row->english_name;
 			$sub_array[] = $row->gender;
 			$sub_array[] = $row->previous_school;
-			$sub_array[] = '<button type="button" name="update" id="update" data-id="'.$row->sid.'" class="btn btn-warning">Edit</button>
-							<button type="button" name="delete" id="delete" data-id="'.$row->sid.'" class="btn btn-danger">Delete</button>
-							';
+			$sub_array[] = '<button type="button" name="update" id="update" data-id="'.$row->sid.'" class="btn btn-warning btn-xs">Edit</button>
+							<button type="button" name="delete" id="delete" data-id="'.$row->sid.'" class="btn btn-danger btn-xs">Delete</button>
+							<button type="button" name="student_view" id="student_view" data-id="'.$row->sid.'" class="btn btn-primary btn-xs">View</button>
+							<button type="button" name="student_print" id="student_print" data-id="'.$row->sid.'" class="btn btn-darker-1 btn-xs">Print</button>
+							
+	';
 			$student_info[] = $sub_array;
 		}
 
@@ -443,6 +449,50 @@ class student extends CI_Controller {
 		}
 
 		echo $output;
+
+	}
+
+	public function view(){
+		$sid = $this->uri->segment(3);
+		$data['single_info'] = $this->Studentsdb->single_fetch_data($sid);
+		$this->load->view("single_student_view",$data);
+	}
+
+	public function student_print(){
+
+		$html = $this->load->view('student_print',[],true);
+
+		$defaultConfig = (new Mpdf\Config\ConfigVariables())->getDefaults();
+		$fontDirs = $defaultConfig['fontDir'];
+
+		$defaultFontConfig = (new Mpdf\Config\FontVariables())->getDefaults();
+		$fontData = $defaultFontConfig['fontdata'];
+
+
+		$mpdf = new \Mpdf\Mpdf([
+			'margin_top' => 7,
+			'margin_left' => 7,
+			'margin_right' => 8,
+			'mirrorMargins' => true,
+			'format'=>'A4',
+			'orientation'=>'P',
+			'fontDir' => array_merge($fontDirs, ['/fonts']),
+			'fontdata' => $fontData + [
+					'solaimanlipi' => [
+						'R' => 'SolaimanLipi.ttf',
+						'useOTL' => 0xFF,
+					]
+				],
+			'default_font' => 'solaimanlipi'
+		]);
+
+
+
+		$html=$this->load->view('pdf',[],true);
+
+		$mpdf->WriteHTML($html);
+		$mpdf->SetFooter('Document Title');
+		$mpdf->Output();
 
 	}
 
